@@ -42,6 +42,12 @@ public class GameObject {
         return (rowIndex==gameObject.rowIndex)&&(columnIndex==gameObject.columnIndex);
     }
 
+    public boolean isColliding(int rowIndex,int columnIndex){
+        return (rowIndex==this.rowIndex)&&(columnIndex==this.columnIndex);
+    }
+
+
+
     public void collide(GameObject gameObject){
 
     }

@@ -22,7 +22,7 @@ public class Wall extends GameObject {
     }
 
     public void collide(Flame flame){
-        flame.setBounds();
+        //flame.setBounds();
         flame.die();
     }
 }

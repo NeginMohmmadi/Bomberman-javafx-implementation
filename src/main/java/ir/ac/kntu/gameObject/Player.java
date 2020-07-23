@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameObject;
 
+import ir.ac.kntu.animation.Dead;
 import ir.ac.kntu.keyboard.KeyListener;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -98,6 +99,7 @@ public class Player extends GameObject implements KeyListener {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        setImage(images.get(1));
     }
     private void playerThreeImages(){
         try {
@@ -137,8 +139,12 @@ public class Player extends GameObject implements KeyListener {
     }
     @Override
     public void notify(KeyEvent keyEvent,List<GameObject> gameObjects){
+        if(!isAlive()){
+            return;
+        }
         this.keyEvent=keyEvent;
         if(keyEvent.getEventType()==KeyEvent.KEY_RELEASED){
+            setImage();
             return;
         }
         if(num==1) {
@@ -151,6 +157,7 @@ public class Player extends GameObject implements KeyListener {
             this.pastRowIndex=getRowIndex();
             notifyPlayer2(keyEvent,gameObjects);
         }
+        setImage();
     }
 
     private void notifyPlayer2(KeyEvent keyEvent,List<GameObject> gameObjects) {
@@ -229,36 +236,51 @@ public class Player extends GameObject implements KeyListener {
             goBack();
         }
         if(gameObject instanceof Flame){
-            die();
+            if(isAlive()){
+                Thread thread=new Thread(new Dead(this));
+                thread.start();
+            }
+        }
+        if(gameObject instanceof Bomb){
+            if(((Bomb) gameObject).isActive()){
+                if(isAlive()){
+                    Thread thread=new Thread(new Dead(this));
+                    thread.start();
+                }
+            }
         }
     }
-    @Override
-    public Image getImage(){
+    public void setImage(){
         if(keyEvent!=null&& keyEvent.getEventType()==KeyEvent.KEY_PRESSED
                 &&interestedInKeys.contains(keyEvent.getCode())){
             switch (direction){
                 case DOWN:
-                    return images.get(0);
+                    setImage(images.get(0));
+                    break;
                 case LEFT:
-                    return images.get(2);
+                    setImage(images.get(2));
+                    break;
                 case RIGHT:
-                    return images.get(4);
+                    setImage(images.get(4));
+                    break;
                 case UP:
-                    return images.get(6);
+                    setImage(images.get(6));
             }
         }else {
             switch (direction){
                 case DOWN:
-                    return images.get(1);
+                    setImage(images.get(1));
+                    break;
                 case LEFT:
-                    return images.get(3);
+                    setImage(images.get(3));
+                    break;
                 case RIGHT:
-                    return images.get(5);
+                    setImage(images.get(5));
+                    break;
                 case UP:
-                    return images.get(7);
+                    setImage(images.get(7));
             }
         }
-        return null;
     }
 
     public void powerUp() {

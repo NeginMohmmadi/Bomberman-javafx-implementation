@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameObject;
 
+import ir.ac.kntu.animation.BombExplosion;
 import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
@@ -15,6 +16,7 @@ public class Bomb extends GameObject {
     private boolean goLeft=true;
     private int power;
     private ArrayList<Flame> flames;
+    private boolean active;
 
 
     public boolean isGoUp() {
@@ -66,7 +68,7 @@ public class Bomb extends GameObject {
         this.power=power;
         flames=new ArrayList<>();
         try {
-            setImage(new Image(new FileInputStream("src/main/resources/assets/map/bombb.png")));
+            setImage(new Image(new FileInputStream("src/main/resources/assets/map/bomb.png")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -86,5 +88,36 @@ public class Bomb extends GameObject {
         for(Flame flame : flames){
             flame.die();
         }
+    }
+
+    public void setImage(int stage){
+        try{
+            switch (stage){
+                case 1:
+                    setImage(new Image(new FileInputStream("src/main/" +
+                            "resources/assets/map/myExplision/explosion4.png")));
+                    break;
+                case 2:
+                    setImage(new Image(new FileInputStream("src/main/" +
+                            "resources/assets/map/myExplision/explosion3.png")));
+                    break;
+                case 3:
+                    setImage(new Image(new FileInputStream("src/main/" +
+                            "resources/assets/map/myExplision/explosion2.png")));
+                    break;
+                default:
+                    setImage(new Image(new FileInputStream("src/main/" +
+                            "resources/assets/map/myExplision/explosion1.png")));
+            }
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+    public boolean isActive(){
+        return this.active;
+    }
+
+    public void setActive(boolean active) {
+        this.active=active;
     }
 }

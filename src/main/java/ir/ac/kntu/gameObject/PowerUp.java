@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PowerUp extends GameObject {
+    private boolean firstCollide;
     public PowerUp(int rowIndex, int columnIndex) {
         super(rowIndex,columnIndex);
         try {
@@ -24,6 +25,9 @@ public class PowerUp extends GameObject {
     }
 
     public void collide(Player player){
+        if(firstCollide){
+            return;
+        }
         player.powerUp();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
@@ -35,5 +39,6 @@ public class PowerUp extends GameObject {
             }
         },15000);
         setVisible(false);
+        firstCollide =true;
     }
 }

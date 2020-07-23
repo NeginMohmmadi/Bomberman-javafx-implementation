@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameObject;
 
+import ir.ac.kntu.animation.BlockBreak;
 import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
@@ -22,7 +23,7 @@ public class Block extends GameObject {
     }
 
     public void collide(Flame flame){
-        flame.setBounds();
-        die();
+        Thread thread=new Thread(new BlockBreak(this));
+        thread.start();
     }
 }

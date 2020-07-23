@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,23 +26,29 @@ public class Director {
     private AnimationTimer animationTimer;
     private List<GameObject> gameObjects;
     private AddRandomObject addRandomObject;
+    private boolean end;
+    private long deltaTime;
+    private long startTime;
 
     public Director(File file){
         root=new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-border-width: 0 0 5 0;");
-        root.setHgap(1);
-        root.setVgap(1);
+        root.setHgap(0);
+        root.setVgap(0);
 
-        scene = new Scene(root, 800, 600,Color.rgb(0,123,48));
+        scene = new Scene(root, 800, 600,Color.rgb(20,97,0));
         mapParser=new MapParser();
         gameObjects=mapParser.gameObjects(file);
         animationTimer=new AnimationTimer() {
             @Override
             public void handle(long now) {
-                checkCollide();
-                clean();
-                addObjectsToRoot();
+                if(!end) {
+                    System.out.println(now);
+                    checkCollide();
+                    clean();
+                    addObjectsToRoot();
+                }
             }
         };
         keyLogger=new KeyLogger(scene,gameObjects);
@@ -50,6 +58,7 @@ public class Director {
     private void clean() {
        for (int i=0;i<gameObjects.size();i++){
            if(!gameObjects.get(i).isAlive()){
+               keyLogger.removeListener(gameObjects.get(i));
                gameObjects.remove(i);
            }
        }
@@ -82,15 +91,16 @@ public class Director {
         }
     }
 
-    public void addGameObject(GameObject gameObject){
-        gameObjects.add(gameObject);
-    }
-
     public void startGame(){
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(addRandomObject);
-        executorService.shutdown();
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                end=true;
+            }
+        },180000);
         animationTimer.start();
+        addRandomObject.go();
     }
 
     public Scene getScene(){
