@@ -23,6 +23,7 @@ public class Player extends GameObject implements KeyListener{
     private Direction direction= Direction.DOWN;
     private KeyEvent keyEvent;
     private PlayerInfo playerInfo;
+    private boolean dying;
 
     public int getPastRowIndex() {
         return pastRowIndex;
@@ -130,6 +131,7 @@ public class Player extends GameObject implements KeyListener{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        setImage(images.get(1));
     }
     /*public void playerOneImages() {
         try {
@@ -246,18 +248,22 @@ public class Player extends GameObject implements KeyListener{
             goBack();
         }
         if(gameObject instanceof Flame){
-            if(isAlive()){
+            if(isAlive()&&!dying){
+                dying=true;
+                System.out.println("pibvf");
+                playerInfo.plusNumOfLost();
                 Thread thread=new Thread(new Dead(this));
                 thread.start();
-                playerInfo.plusNumOfLost();
             }
         }
         if(gameObject instanceof Bomb){
             if(((Bomb) gameObject).isActive()){
-                if(isAlive()){
+                if(isAlive()&&!dying){
+                    dying=true;
+                    System.out.println("pibvf");
+                    playerInfo.plusNumOfLost();
                     Thread thread=new Thread(new Dead(this));
                     thread.start();
-                    playerInfo.plusNumOfLost();
                 }
             }
         }
@@ -310,12 +316,16 @@ public class Player extends GameObject implements KeyListener{
     }
 
     public int getNumOfLost() {
-        return getNumOfLost();
+        return playerInfo.getNumOfLost();
     }
     public int getNumOfWon() {
-        return getNumOfWon();
+        return playerInfo.getNumOfWon();
     }
     public int getNumOfGame() {
-        return getNumOfGame();
+        return playerInfo.getNumOfGame();
+    }
+
+    public PlayerInfo getPlayerInfo() {
+        return this.playerInfo;
     }
 }

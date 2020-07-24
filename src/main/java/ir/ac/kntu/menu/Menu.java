@@ -29,7 +29,7 @@ public class Menu {
     private GridPane root;
     private Scene scene;
     private PlayerDAO playerDAO;
-    public Menu(Scene scene,GridPane root){
+    public Menu(Stage stage,Scene scene,GridPane root){
         playerDAO=new BinaryPlayerDAO();
         Background background = null;
         background = getBackground(new File("src/main/resources/assets/background.png"));
@@ -40,6 +40,9 @@ public class Menu {
         root.getStyleClass().add("root");
         newGame.getStyleClass().add("newGame");
         tutorial.getStyleClass().add("tutorial");
+        exit.setOnAction(e->{
+            stage.close();
+        });
         exit.getStyleClass().add("exit");
         this.root=root;
         this.scene=scene;
@@ -80,7 +83,7 @@ public class Menu {
             }
             System.out.println("ooo");
             PlayerInfo playerInfo=(PlayerInfo) listView.getSelectionModel().getSelectedItem();
-            if(!result.contains(playerInfo)){
+            if(!result.contains(playerInfo)&&playerInfo!=null){
                 result.add(playerInfo);
             }
         });

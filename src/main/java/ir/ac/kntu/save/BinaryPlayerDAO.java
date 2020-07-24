@@ -11,12 +11,16 @@ public class BinaryPlayerDAO implements PlayerDAO{
     public ArrayList<PlayerInfo> getAllPlayers(){
         File file=new File("src/main/resources/Players.txt");
         ArrayList<PlayerInfo> players=new ArrayList<>();
-        try(FileInputStream fileInputStream=new FileInputStream(file);
-            ObjectInputStream input=new ObjectInputStream(fileInputStream)){
-            for(PlayerInfo player:players){
-                players.add((PlayerInfo) input.readObject());
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             ObjectInputStream input = new ObjectInputStream(fileInputStream)) {
+            while(true) {
+                try {
+                    players.add((PlayerInfo) input.readObject());
+                } catch(EOFException e){
+                    break;
+                }
             }
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e) {
             System.out.println("No Such File found!!!!!");
         } catch (ClassNotFoundException | IOException e) {
             System.out.println("Nothing exists in file!!!!!");
@@ -27,7 +31,11 @@ public class BinaryPlayerDAO implements PlayerDAO{
     @Override
     public void saveAllPlayers(ArrayList<PlayerInfo> list) {
         ArrayList<PlayerInfo> players=getAllPlayers();
-        players.addAll(list);
+        for (PlayerInfo playerInfo:list){
+            if(!players.contains(playerInfo)){
+                players.add(playerInfo);
+            }
+        }
         File file=new File("src/main/resources/Players.txt");
         try(FileOutputStream fileOutputStream=new FileOutputStream(file,false);
             ObjectOutputStream output=new ObjectOutputStream(fileOutputStream)){

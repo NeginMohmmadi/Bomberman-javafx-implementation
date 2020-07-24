@@ -37,7 +37,7 @@ public class JavaFxApplication extends Application {
         }
         root.setHgap(0);
         root.setVgap(0);
-        Menu menu=new Menu(scene,root);
+        Menu menu=new Menu(stage,scene,root);
         stage.setScene(scene);
         stage.setTitle("Fariboorz-bomberman");
         stage.show();

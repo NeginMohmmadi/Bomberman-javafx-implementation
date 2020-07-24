@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Block extends GameObject {
+    private boolean dying;
     public Block(int rowIndex, int columnIndex) {
         super(rowIndex,columnIndex);
         try {
@@ -23,7 +24,10 @@ public class Block extends GameObject {
     }
 
     public void collide(Flame flame){
-        Thread thread=new Thread(new BlockBreak(this));
-        thread.start();
+        if(!dying) {
+            dying=true;
+            Thread thread = new Thread(new BlockBreak(this));
+            thread.start();
+        }
     }
 }

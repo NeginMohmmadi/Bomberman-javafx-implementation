@@ -1,6 +1,7 @@
 package ir.ac.kntu.gameObject;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class PlayerInfo implements Serializable {
     private String name;
@@ -19,6 +20,27 @@ public class PlayerInfo implements Serializable {
                 ", numOfGame=" + numOfGame +"   "+
                 ", numOfWon=" + numOfWon +"   "+
                 ", numOfLost=" + numOfLost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        PlayerInfo that = (PlayerInfo) o;
+        return numOfGame == that.numOfGame &&
+                numOfWon == that.numOfWon &&
+                numOfLost == that.numOfLost &&
+                score == that.score &&
+                name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     public void win(){

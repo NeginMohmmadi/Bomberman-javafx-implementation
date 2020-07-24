@@ -40,6 +40,7 @@ public class Dead implements Runnable {
                         "resources/assets/map/dead-player-black/dead7.png")));
                 Thread.sleep(150);
                 player.die();
+
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
