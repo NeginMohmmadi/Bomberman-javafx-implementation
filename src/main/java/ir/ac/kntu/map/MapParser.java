@@ -11,21 +11,16 @@ import java.util.Map;
 public class MapParser {
     private Map<Character, GameObjectCreator> mapTranslator;
 
-    public MapParser(ArrayList<Player> players){
+    public MapParser(ArrayList<PlayerInfo> players){
         mapTranslator=initializeTranslator(players);
     }
 
-    private Map<Character, GameObjectCreator> initializeTranslator(ArrayList<Player> players) {
+    private Map<Character, GameObjectCreator> initializeTranslator(ArrayList<PlayerInfo> players) {
+        System.out.println(players);
         Map<Character, GameObjectCreator> mapTranslator=new HashMap<>();
         mapTranslator.put(' ',(row,column)->new Ground(row,column));
-        mapTranslator.put('1',(row,column)->{
-            players.get(0).setInfo(1,row,column);
-            return players.get(0);
-        });
-        mapTranslator.put('2',(row,column)->{
-            players.get(1).setInfo(2,row,column);
-            return players.get(1);
-        });
+        mapTranslator.put('1',(row,column)->new Player(1,players.get(0),row,column));
+        mapTranslator.put('2',(row,column)->new Player(2,players.get(1),row,column));
         mapTranslator.put('b',(row,column)->new Block(row,column));
         mapTranslator.put('p',(row,column)->new PowerUp(row,column));
         mapTranslator.put('w',(row,column)->new Wall(row,column));

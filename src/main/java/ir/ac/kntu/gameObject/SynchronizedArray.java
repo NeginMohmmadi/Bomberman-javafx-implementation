@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -9,7 +10,6 @@ public class SynchronizedArray<T> extends ArrayList<T> {
     public synchronized boolean add(T t){
         return super.add(t);
     }
-
     public synchronized void add(int index,T t){
         super.add(index,t);
     }

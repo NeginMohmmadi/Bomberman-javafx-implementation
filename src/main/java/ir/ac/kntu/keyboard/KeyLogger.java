@@ -32,6 +32,10 @@ public class KeyLogger implements EventHandler<KeyEvent> {
         }
     }
 
+    public void removeAllListeners(){
+        listeners.clear();
+    }
+
     public void removeListener(GameObject gameObject) {
         if(gameObject instanceof KeyListener){
             listeners.remove(gameObject);

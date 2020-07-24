@@ -12,19 +12,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends GameObject implements KeyListener, Serializable {
-    private String name;
-    private int numOfGame;
-    private int numOfWon;
-    private int numOfLost;
+public class Player extends GameObject implements KeyListener{
     private int num;
     private ArrayList<Image> images;
+    private int deadTime;
     private ArrayList<KeyCode> interestedInKeys;
     private int pastRowIndex;
     private int pastColumnIndex;
     private int power=3;
     private Direction direction= Direction.DOWN;
     private KeyEvent keyEvent;
+    private PlayerInfo playerInfo;
 
     public int getPastRowIndex() {
         return pastRowIndex;
@@ -38,19 +36,16 @@ public class Player extends GameObject implements KeyListener, Serializable {
         return direction;
     }
 
-    public Player(String name){
-        super(0,0);
-        this.name=name;
-    }
-
-    public Player(int num, int rowIndex, int columnIndex) {
+    public Player(int num,PlayerInfo playerInfo,int rowIndex, int columnIndex) {
         super(rowIndex,columnIndex);
+        this.playerInfo=playerInfo;
         setInfo(num,rowIndex,columnIndex);
     }
 
     public void setInfo(int num, int rowIndex, int columnIndex) {
         setRowIndex(rowIndex);
         setColumnIndex(columnIndex);
+        playerInfo.plusNumOfGame();
         this.num=num;
         this.images=new ArrayList<>();
         interestedInKeys=new ArrayList<>();
@@ -60,20 +55,16 @@ public class Player extends GameObject implements KeyListener, Serializable {
             interestedInKeys.add(KeyCode.DOWN);
             interestedInKeys.add(KeyCode.LEFT);
             interestedInKeys.add(KeyCode.RIGHT);
-        }else if(num==2){
-            playerTowImages();
+        }
+        if(num==2){
+            playerTwoImages();
             interestedInKeys.add(KeyCode.A);
             interestedInKeys.add(KeyCode.S);
             interestedInKeys.add(KeyCode.D);
             interestedInKeys.add(KeyCode.W);
-        }else if(num==3){
-            playerThreeImages();
-        }else{
-            playerFourImages();
         }
     }
-
-    private void playerFourImages() {
+    /*private void playerFourImages() {
         try {
             images.add(new Image(new FileInputStream("src/main" +
                     "/resources/assets/player_yellow/player_yellow_down_moving.png")));
@@ -94,8 +85,8 @@ public class Player extends GameObject implements KeyListener, Serializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-    private void playerTowImages() {
+    }*/
+    private void playerTwoImages() {
         try {
             images.add(new Image(new FileInputStream("src/main/" +
                     "resources/assets/player_black/player_black_down_moving.png")));
@@ -118,7 +109,7 @@ public class Player extends GameObject implements KeyListener, Serializable {
         }
         setImage(images.get(1));
     }
-    private void playerThreeImages(){
+    private void playerOneImages(){
         try {
             images.add(new Image(new FileInputStream("src/main" +
                     "/resources/assets/player_red/player_red_down_moving.png")));
@@ -140,7 +131,7 @@ public class Player extends GameObject implements KeyListener, Serializable {
             e.printStackTrace();
         }
     }
-    public void playerOneImages() {
+    /*public void playerOneImages() {
         try {
             images.add(new Image(new FileInputStream("src/main/resources/assets/player/player_down_moving.png")));
             images.add(new Image(new FileInputStream("src/main/resources/assets/player/player_down_standing.png")));
@@ -153,7 +144,7 @@ public class Player extends GameObject implements KeyListener, Serializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }*/
     @Override
     public void notify(KeyEvent keyEvent,List<GameObject> gameObjects){
         if(!isAlive()){
@@ -207,42 +198,44 @@ public class Player extends GameObject implements KeyListener, Serializable {
                 Bomb bomb=new Bomb(getRowIndex(),getColumnIndex(),power);
                 gameObjects.add(bomb);
                 bomb.explosion(gameObjects);
-                //System.out.println(gameObjects.get(getRowIndex()).size());
-                //FlameHandler.getInstance().explosion(gameObjects,getRowIndex(),getColumnIndex());
-                //new Flame(power,gameObjects,new Bomb(getRowIndex(),getColumnIndex()));
-                //System.out.println(gameObjects.get(getRowIndex()).size());
         }
         gameObjects.remove(this);
         gameObjects.add(this);
     }
 
     private void notifyPlayer1(KeyEvent keyEvent,List<GameObject> gameObjects) {
-        pastRowIndex=getRowIndex();
-        pastColumnIndex=getColumnIndex();
         switch (keyEvent.getCode()){
             case UP:
                 if(getRowIndex()>1) {
                     setRowIndex(getRowIndex() - 1);
                 }
+                this.direction= Direction.UP;
                 break;
             case DOWN:
                 if (getRowIndex() < 9) {
                     setRowIndex(getRowIndex() + 1);
                 }
+                this.direction= Direction.DOWN;
                 break;
             case RIGHT:
                 if(getColumnIndex()<13) {
                     setColumnIndex(getColumnIndex() + 1);
                 }
+                this.direction= Direction.RIGHT;
                 break;
             case LEFT:
                 if(getColumnIndex()>1) {
                     setColumnIndex(getColumnIndex() - 1);
                 }
+                this.direction= Direction.LEFT;
                 break;
-            default:
-                break;
+            case ENTER:
+                Bomb bomb=new Bomb(getRowIndex(),getColumnIndex(),power);
+                gameObjects.add(bomb);
+                bomb.explosion(gameObjects);
         }
+        gameObjects.remove(this);
+        gameObjects.add(this);
     }
     public void goBack(){
         setColumnIndex(pastColumnIndex);
@@ -256,6 +249,7 @@ public class Player extends GameObject implements KeyListener, Serializable {
             if(isAlive()){
                 Thread thread=new Thread(new Dead(this));
                 thread.start();
+                playerInfo.plusNumOfLost();
             }
         }
         if(gameObject instanceof Bomb){
@@ -263,9 +257,16 @@ public class Player extends GameObject implements KeyListener, Serializable {
                 if(isAlive()){
                     Thread thread=new Thread(new Dead(this));
                     thread.start();
+                    playerInfo.plusNumOfLost();
                 }
             }
         }
+    }
+    public void win(){
+        playerInfo.plusNumOfWon();
+    }
+    public void setDeadTime(int deadTime){
+        this.deadTime=deadTime;
     }
     public void setImage(){
         if(keyEvent!=null&& keyEvent.getEventType()==KeyEvent.KEY_PRESSED
@@ -306,5 +307,15 @@ public class Player extends GameObject implements KeyListener, Serializable {
 
     public void powerDown() {
         power=3;
+    }
+
+    public int getNumOfLost() {
+        return getNumOfLost();
+    }
+    public int getNumOfWon() {
+        return getNumOfWon();
+    }
+    public int getNumOfGame() {
+        return getNumOfGame();
     }
 }

@@ -2,9 +2,12 @@ package ir.ac.kntu;
 
 import ir.ac.kntu.gameObject.GameObject;
 import ir.ac.kntu.gameObject.Player;
+import ir.ac.kntu.gameObject.PlayerInfo;
 import ir.ac.kntu.keyboard.KeyListener;
 import ir.ac.kntu.keyboard.KeyLogger;
 import ir.ac.kntu.map.MapParser;
+import ir.ac.kntu.save.BinaryPlayerDAO;
+import ir.ac.kntu.save.PlayerDAO;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,14 +34,16 @@ public class GameLoop {
     private List<GameObject> gameObjects;
     private AddRandomObject addRandomObject;
     private final int GAME_TiME=180000;
+    private int numOfPlayers;
     private int deltaTime;
     private long startTime;
     private boolean end;
-    private ArrayList<Player> players;
+    private ArrayList<PlayerInfo> players;
 
-    public GameLoop(File file,Scene scene,GridPane root,ArrayList<Player> players){
+    public GameLoop(File file,Scene scene,GridPane root,ArrayList<PlayerInfo> players){
         init(scene, root);
         this.players=players;
+        numOfPlayers=players.size();
         mapParser=new MapParser(players);
         gameObjects=mapParser.gameObjects(file);
         setAnimationTimer();
@@ -50,16 +55,17 @@ public class GameLoop {
         animationTimer=new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(!end) {
-                    deltaTime=(int)(new Date().getTime()-startTime)/1000;
-                    System.out.println(deltaTime);
-                    checkCollide();
-                    clean();
-                    if (players.size()==0){
-                        end=true;
-                    }
-                    addObjectsToRoot();
+                if(end){
+                    endGame();
                 }
+                deltaTime=(int)(new Date().getTime()-startTime)/1000;
+                System.out.println(deltaTime);
+                checkCollide();
+                clean();
+                if (numOfPlayers==1){
+                    end=true;
+                }
+                addObjectsToRoot();
             }
         };
     }
@@ -80,13 +86,12 @@ public class GameLoop {
     private void clean() {
        for (int i=0;i<gameObjects.size();i++){
            if(!gameObjects.get(i).isAlive()){
-               keyLogger.removeListener(gameObjects.get(i));
-               players.remove(gameObjects.get(i));
-               gameObjects.remove(i);
-           }else {
-               if(gameObjects.get(i) instanceof Player&&!players.contains(gameObjects.get(i))){
-                   players.add((Player)gameObjects.get(i));
+               if(gameObjects.get(i) instanceof Player) {
+                   keyLogger.removeListener(gameObjects.get(i));
+                   ((Player) gameObjects.get(i)).setDeadTime(deltaTime);
+                   numOfPlayers--;
                }
+               gameObjects.remove(i);
            }
        }
     }
@@ -141,6 +146,19 @@ public class GameLoop {
 
     public void endGame(){
         animationTimer.stop();
+        keyLogger.removeAllListeners();
+        addRandomObject.stop();
+        for(PlayerInfo player : players){
+            if(player.getNumOfLost()+player.getNumOfWon()!=player.getNumOfGame()){
+                player.win();
+            }
+        }
+        showRanks();
+        PlayerDAO playerDAO=new BinaryPlayerDAO();
+        playerDAO.saveAllPlayers(players);
+    }
+
+    private void showRanks() {
 
     }
 

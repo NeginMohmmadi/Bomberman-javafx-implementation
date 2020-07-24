@@ -10,15 +10,12 @@ import java.util.TimerTask;
 
 public class AddRandomObject extends TimerTask {
     private List<GameObject> gameObjects;
-    private boolean end;
     private static final SecureRandom generator = new SecureRandom();
+    private Timer timer;
 
     public AddRandomObject(List<GameObject> gameObjects) {
         this.gameObjects=gameObjects;
-    }
-
-    public void setEnd(boolean end){
-        this.end=end;
+        this.timer=new Timer();
     }
 
     @Override
@@ -29,6 +26,10 @@ public class AddRandomObject extends TimerTask {
     public void go(){
         Timer timer=new Timer();
         timer.schedule(this,15000,15000);
+    }
+
+    public void stop(){
+        timer.cancel();
     }
     public void randomObject(){
         Cell cell=randomCell();

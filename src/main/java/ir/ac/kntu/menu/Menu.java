@@ -2,6 +2,7 @@ package ir.ac.kntu.menu;
 
 import ir.ac.kntu.GameLoop;
 import ir.ac.kntu.gameObject.Player;
+import ir.ac.kntu.gameObject.PlayerInfo;
 import ir.ac.kntu.save.BinaryPlayerDAO;
 import ir.ac.kntu.save.PlayerDAO;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,15 +31,8 @@ public class Menu {
     private PlayerDAO playerDAO;
     public Menu(Scene scene,GridPane root){
         playerDAO=new BinaryPlayerDAO();
-        BackgroundFill backgroundFill= null;
-        try {
-            backgroundFill = new BackgroundFill(new ImagePattern(new Image
-                    (new FileInputStream("src/main/resources/assets/background.png"))),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Background background=new Background(backgroundFill);
+        Background background = null;
+        background = getBackground(new File("src/main/resources/assets/background.png"));
         root.setBackground(background);
         Button newGame=new Button("NEW GAME");
         Button tutorial=new Button("TUTORIAL");
@@ -56,25 +51,46 @@ public class Menu {
         root.add(exit,0,2);
     }
 
+    @NotNull
+    private Background getBackground(File file) {
+        BackgroundFill backgroundFill= null;
+        try {
+            backgroundFill = new BackgroundFill(new ImagePattern(new Image
+                    (new FileInputStream(file))),
+                    CornerRadii.EMPTY, Insets.EMPTY);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Background(backgroundFill);
+    }
+
     private void setPlayers() {
+        Background background = null;
+        background = getBackground(new File("src/main/resources/assets/background of game.jpg"));
+        root.setBackground(background);
         root.getChildren().clear();
-        ArrayList<Player> players=playerDAO.getAllPlayers();
+        ArrayList<PlayerInfo> players=playerDAO.getAllPlayers();
         ListView listView=new ListView();
         listView.getItems().addAll(players);
-        System.out.println("ppppppppppp");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        ArrayList<Player> result=new ArrayList<>();
+        ArrayList<PlayerInfo> result=new ArrayList<>();
         listView.setOnMouseClicked(e->{
             if(result.size()==2) {
                 result.remove(result.size() - 1);
             }
-            result.add((Player) listView.getSelectionModel().getSelectedItem());
+            System.out.println("ooo");
+            PlayerInfo playerInfo=(PlayerInfo) listView.getSelectionModel().getSelectedItem();
+            if(!result.contains(playerInfo)){
+                result.add(playerInfo);
+            }
         });
         listView.getStyleClass().add("listView");
+        listView.setPrefHeight(400);
+        listView.setPrefWidth(500);
         Button submit=new Button("Submit");
         Button add=new Button("AddPlayer");
         add.setOnAction(e->{
-            addNewPlayer(result);
+            addNewPlayer(listView);
         });
         submit.setOnAction(e->{
             if(result.size()==2) {
@@ -88,7 +104,7 @@ public class Menu {
         root.add(submit,0,2);
     }
 
-    private void addNewPlayer(ArrayList<Player> players) {
+    private void addNewPlayer(ListView listView) {
         Stage stage=new Stage();
         GridPane gridPane=new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -99,7 +115,7 @@ public class Menu {
         Button button=new Button("Save");
         button.setOnAction(e->{
             if(!name.getText().isEmpty()) {
-                players.add(new Player(name.getText()));
+                listView.getItems().add(new PlayerInfo(name.getText()));
                 stage.close();
             }
         });
@@ -107,7 +123,7 @@ public class Menu {
         gridPane.add(name,0,1);
         gridPane.add(button,0,2);
         stage.setTitle("add new player");
-        stage.setScene(new Scene(gridPane,100,100,Color.BLUE));
+        stage.setScene(new Scene(gridPane,300,300,Color.BLUE));
         stage.show();
     }
 
