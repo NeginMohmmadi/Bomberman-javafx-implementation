@@ -3,6 +3,7 @@ package ir.ac.kntu.map;
 import ir.ac.kntu.gameObject.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,17 +11,21 @@ import java.util.Map;
 public class MapParser {
     private Map<Character, GameObjectCreator> mapTranslator;
 
-    public MapParser(){
-        mapTranslator=initializeTranslator();
+    public MapParser(ArrayList<Player> players){
+        mapTranslator=initializeTranslator(players);
     }
 
-    private Map<Character, GameObjectCreator> initializeTranslator() {
+    private Map<Character, GameObjectCreator> initializeTranslator(ArrayList<Player> players) {
         Map<Character, GameObjectCreator> mapTranslator=new HashMap<>();
         mapTranslator.put(' ',(row,column)->new Ground(row,column));
-        mapTranslator.put('1',(row,column)->new Player(1,row,column));
-        mapTranslator.put('2',(row,column)->new Player(2,row,column));
-        mapTranslator.put('3',(row,column)->new Player(3,row,column));
-        mapTranslator.put('4',(row,column)->new Player(4,row,column));
+        mapTranslator.put('1',(row,column)->{
+            players.get(0).setInfo(1,row,column);
+            return players.get(0);
+        });
+        mapTranslator.put('2',(row,column)->{
+            players.get(1).setInfo(2,row,column);
+            return players.get(1);
+        });
         mapTranslator.put('b',(row,column)->new Block(row,column));
         mapTranslator.put('p',(row,column)->new PowerUp(row,column));
         mapTranslator.put('w',(row,column)->new Wall(row,column));

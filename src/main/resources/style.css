@@ -25,3 +25,26 @@
     -fx-stroke:black;
     -fx-stroke-width:1;
 }
+.listView:filled:selected:focused, .list-cell:filled:selected {
+    /* 3:, 4: */
+    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%);
+    -fx-text-fill: white; /* 5 */
+}
+.listView{
+    -fx-text-fill: black; /* 5 */
+    -fx-border-radius: 20px ;
+    -fx-background-color: rgba(1,255,0,0);
+    -fx-font-size: 20px;
+    -fx-border-width: 0.5px;
+    -fx-border-style: solid;
+    -fx-width: 60px;
+    -fx-font-family: 'Impact,fantasy,sans-serif' ;
+    -fx-font-weight: bold;
+    -fx-border-color: rgba(0,230,255,255);
+}
+.list-cell:odd { -fx-background-color: white; /* 1 */ }
+.list-cell:even { -fx-background-color: #8f8; /* for information */ }
+.list-cell:filled:hover {
+    -fx-background-color: #00f; /* 2 */
+    -fx-text-fill: white; /* 5 */
+}

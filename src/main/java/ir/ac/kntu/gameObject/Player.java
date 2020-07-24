@@ -8,10 +8,15 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends GameObject implements KeyListener {
+public class Player extends GameObject implements KeyListener, Serializable {
+    private String name;
+    private int numOfGame;
+    private int numOfWon;
+    private int numOfLost;
     private int num;
     private ArrayList<Image> images;
     private ArrayList<KeyCode> interestedInKeys;
@@ -33,8 +38,19 @@ public class Player extends GameObject implements KeyListener {
         return direction;
     }
 
+    public Player(String name){
+        super(0,0);
+        this.name=name;
+    }
+
     public Player(int num, int rowIndex, int columnIndex) {
         super(rowIndex,columnIndex);
+        setInfo(num,rowIndex,columnIndex);
+    }
+
+    public void setInfo(int num, int rowIndex, int columnIndex) {
+        setRowIndex(rowIndex);
+        setColumnIndex(columnIndex);
         this.num=num;
         this.images=new ArrayList<>();
         interestedInKeys=new ArrayList<>();
@@ -56,6 +72,7 @@ public class Player extends GameObject implements KeyListener {
             playerFourImages();
         }
     }
+
     private void playerFourImages() {
         try {
             images.add(new Image(new FileInputStream("src/main" +

@@ -36,10 +36,10 @@ public class GameLoop {
     private boolean end;
     private ArrayList<Player> players;
 
-    public GameLoop(File file,Scene scene,GridPane root){
+    public GameLoop(File file,Scene scene,GridPane root,ArrayList<Player> players){
         init(scene, root);
-        players=new ArrayList<>();
-        mapParser=new MapParser();
+        this.players=players;
+        mapParser=new MapParser(players);
         gameObjects=mapParser.gameObjects(file);
         setAnimationTimer();
         keyLogger=new KeyLogger(scene,gameObjects);
@@ -137,6 +137,11 @@ public class GameLoop {
         animationTimer.start();
         startTime=new Date().getTime();
         addRandomObject.go();
+    }
+
+    public void endGame(){
+        animationTimer.stop();
+
     }
 
     public Scene getScene(){
