@@ -42,6 +42,7 @@ public class MapParser {
             while ((line = br.readLine()) != null) {
                 rowIndex++;
                 for (int i = 0; i < line.length(); i++) {
+                    result.add(new Normal(rowIndex,i));
                     result.add(mapTranslator.get(line.charAt(i)).create(rowIndex,i));
                 }
             }

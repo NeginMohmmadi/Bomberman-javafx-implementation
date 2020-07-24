@@ -32,7 +32,9 @@ public class BombExplosion extends TimerTask {
     private boolean checkCollideWithWall(int rowIndex,int columnIndex){
         for(int i=0;i<gameObjects.size();i++){
             if(gameObjects.get(i).isColliding(rowIndex,columnIndex)){
-                return (gameObjects.get(i) instanceof Wall)||(gameObjects.get(i) instanceof Block);
+                if((gameObjects.get(i) instanceof Wall)||(gameObjects.get(i) instanceof Block)){
+                    return true;
+                }
             }
         }
         return false;

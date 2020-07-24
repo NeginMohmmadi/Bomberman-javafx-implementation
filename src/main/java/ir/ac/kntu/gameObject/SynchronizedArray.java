@@ -25,34 +25,4 @@ public class SynchronizedArray<T> extends ArrayList<T> {
     public synchronized boolean removeAll(Collection<?> collection){
         return super.removeAll(collection);
     }
-
-    /*public synchronized GameObje get(int rowIndex,int columnIndex){
-        for(GameObject gameObject : gameObjects){
-            if(gameObject.getColumnIndex()==columnIndex && gameObject.getRowIndex()==rowIndex){
-                return gameObject;
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Cell> getGroundInstance(){
-        ArrayList<Cell> cells=new ArrayList<>();
-        for (GameObject gameObject : gameObjects){
-            if(gameObject instanceof Ground){
-                Cell cell=new Cell(gameObject.getRowIndex(),gameObject.getColumnIndex());
-                cells.add(cell);
-            }
-        }
-        return cells;
-    }
-
-    public ArrayList<GameObject> getKeyListenerInstance(){
-        ArrayList<GameObject> result=new ArrayList<>();
-        for (GameObject gameObject : gameObjects) {
-            if (gameObject instanceof KeyListener) {
-                result.add(gameObject);
-            }
-        }
-        return result;
-    }*/
 }
