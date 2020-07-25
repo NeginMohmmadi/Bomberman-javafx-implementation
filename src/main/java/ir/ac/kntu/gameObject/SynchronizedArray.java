@@ -1,6 +1,5 @@
 package ir.ac.kntu.gameObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 

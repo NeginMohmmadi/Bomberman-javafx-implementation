@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public class AddRandomObject extends TimerTask {
     private List<GameObject> gameObjects;
-    private static final SecureRandom generator = new SecureRandom();
+    private static final SecureRandom GENERATOR = new SecureRandom();
     private Timer timer;
 
     public AddRandomObject(List<GameObject> gameObjects) {
@@ -33,7 +33,7 @@ public class AddRandomObject extends TimerTask {
     }
     public void randomObject(){
         Cell cell=randomCell();
-        int random=generator.nextInt(3);
+        int random=GENERATOR.nextInt(3);
         if (random==0){
             Bomb bomb=new Bomb(cell.getRowIndex(),cell.getColumnIndex(),3);
             gameObjects.add(bomb);
@@ -55,6 +55,6 @@ public class AddRandomObject extends TimerTask {
             }
         }
 
-        return cells.get(generator.nextInt(cells.size()));
+        return cells.get(GENERATOR.nextInt(cells.size()));
     }
 }

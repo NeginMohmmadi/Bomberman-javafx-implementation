@@ -10,6 +10,7 @@ public class Flame extends GameObject {
     private int step;
     private int stage;
     private int power;
+    private final String fileSource="src/main/resources/assets/map/myExplision";
     public Flame(int rowIndex, int columnIndex, Direction direction,int power,int step,int stage) {
         super(rowIndex, columnIndex);
         //images=new ArrayList<>();
@@ -32,10 +33,9 @@ public class Flame extends GameObject {
                 return getDownImage();
             case UP:
                 return getUpImage();
-            case LEFT:
+            default:
                 return getLeftImage();
         }
-        return null;
     }
 
     private Image getRightImage() {
@@ -43,11 +43,9 @@ public class Flame extends GameObject {
             switch (stage) {
                 case 1:
                     if (step < power) {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion28.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion28.png"));
                     } else {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion12.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion12.png"));
                     }
                 case 2:
                     if (step < power) {
@@ -59,8 +57,7 @@ public class Flame extends GameObject {
                     }
                 case 3:
                     if (step < power) {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion26.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion26.png"));
                     } else {
                         return new Image(new FileInputStream("src/main/" +
                                 "resources/assets/map/myExplision/explosion10.png"));
@@ -79,13 +76,13 @@ public class Flame extends GameObject {
         }
         return null;
     }
+
     private Image getLeftImage() {
         try {
             switch (stage) {
                 case 1:
                     if (step < power) {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion28.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion28.png"));
                     } else {
                         return new Image(new FileInputStream("src/main/" +
                                 "resources/assets/map/myExplision/explosion20.png"));
@@ -125,8 +122,7 @@ public class Flame extends GameObject {
             switch (stage) {
                 case 1:
                     if (step < power) {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion24.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion24.png"));
                     } else {
                         return new Image(new FileInputStream("src/main/" +
                                 "resources/assets/map/myExplision/explosion8.png"));
@@ -167,8 +163,7 @@ public class Flame extends GameObject {
             switch (stage) {
                 case 1:
                     if (step < power) {
-                        return new Image(new FileInputStream("src/main/" +
-                                "resources/assets/map/myExplision/explosion24.png"));
+                        return new Image(new FileInputStream(fileSource+"/explosion24.png"));
                     } else {
                         return new Image(new FileInputStream("src/main/" +
                                 "resources/assets/map/myExplision/explosion16.png"));

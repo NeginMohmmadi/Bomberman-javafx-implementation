@@ -1,6 +1,5 @@
 package ir.ac.kntu.gameObject;
 
-import ir.ac.kntu.GameLoop;
 import javafx.scene.image.Image;
 
 import java.io.FileInputStream;

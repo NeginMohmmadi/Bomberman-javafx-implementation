@@ -1,6 +1,5 @@
 package ir.ac.kntu.save;
 
-import ir.ac.kntu.gameObject.Player;
 import ir.ac.kntu.gameObject.PlayerInfo;
 
 import java.io.*;

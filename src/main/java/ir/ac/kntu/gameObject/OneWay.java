@@ -17,7 +17,7 @@ public class OneWay extends GameObject {
         try {
             setImage(direction);
         }catch (FileNotFoundException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }
     public void setImage(Direction direction) throws FileNotFoundException {
@@ -34,7 +34,7 @@ public class OneWay extends GameObject {
                 super.setImage(new Image(new FileInputStream("src/main/" +
                         "resources/assets/map/oneway/oneway_right.png")));
                 break;
-            case LEFT:
+            default:
                 super.setImage(new Image(new FileInputStream("src/main/" +
                         "resources/assets/map/oneway/oneway_left.png")));
                 break;

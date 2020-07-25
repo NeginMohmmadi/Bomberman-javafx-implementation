@@ -2,18 +2,11 @@ package ir.ac.kntu;
 
 import ir.ac.kntu.menu.Menu;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.io.File;
-import java.io.FileInputStream;
 
 
 public class JavaFxApplication extends Application {

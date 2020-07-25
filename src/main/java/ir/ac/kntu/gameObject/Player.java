@@ -8,7 +8,6 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +22,6 @@ public class Player extends GameObject implements KeyListener{
     private KeyEvent keyEvent;
     private PlayerInfo playerInfo;
     private boolean dying;
-
-    public int getPastRowIndex() {
-        return pastRowIndex;
-    }
-
-    public int getPastColumnIndex() {
-        return pastColumnIndex;
-    }
 
     public Direction getDirection() {
         return direction;
@@ -64,28 +55,6 @@ public class Player extends GameObject implements KeyListener{
             interestedInKeys.add(KeyCode.W);
         }
     }
-    /*private void playerFourImages() {
-        try {
-            images.add(new Image(new FileInputStream("src/main" +
-                    "/resources/assets/player_yellow/player_yellow_down_moving.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_down_standing.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_left_moving.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_left_standing.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_right_moving.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_right_standing.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_up_moving.png")));
-            images.add(new Image(new FileInputStream("src/main/" +
-                    "resources/assets/player_yellow/player_yellow_up_standing.png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }*/
     private void playerTwoImages() {
         try {
             images.add(new Image(new FileInputStream("src/main/" +
@@ -199,11 +168,12 @@ public class Player extends GameObject implements KeyListener{
                 Bomb bomb=new Bomb(getRowIndex(),getColumnIndex(),power);
                 gameObjects.add(bomb);
                 bomb.explosion(gameObjects);
+            default:
+                break;
         }
         gameObjects.remove(this);
         gameObjects.add(this);
     }
-
     private void notifyPlayer1(KeyEvent keyEvent,List<GameObject> gameObjects) {
         switch (keyEvent.getCode()){
             case UP:
@@ -234,6 +204,8 @@ public class Player extends GameObject implements KeyListener{
                 Bomb bomb=new Bomb(getRowIndex(),getColumnIndex(),power);
                 gameObjects.add(bomb);
                 bomb.explosion(gameObjects);
+            default:
+                break;
         }
         gameObjects.remove(this);
         gameObjects.add(this);
@@ -286,7 +258,7 @@ public class Player extends GameObject implements KeyListener{
                 case RIGHT:
                     setImage(images.get(4));
                     break;
-                case UP:
+                default:
                     setImage(images.get(6));
             }
         }else {
@@ -300,20 +272,17 @@ public class Player extends GameObject implements KeyListener{
                 case RIGHT:
                     setImage(images.get(5));
                     break;
-                case UP:
+                default:
                     setImage(images.get(7));
             }
         }
     }
-
     public void powerUp() {
         power=5;
     }
-
     public void powerDown() {
         power=3;
     }
-
     public int getNumOfLost() {
         return playerInfo.getNumOfLost();
     }
@@ -323,7 +292,6 @@ public class Player extends GameObject implements KeyListener{
     public int getNumOfGame() {
         return playerInfo.getNumOfGame();
     }
-
     public PlayerInfo getPlayerInfo() {
         return this.playerInfo;
     }

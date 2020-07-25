@@ -1,7 +1,6 @@
 package ir.ac.kntu.menu;
 
 import ir.ac.kntu.GameLoop;
-import ir.ac.kntu.gameObject.Player;
 import ir.ac.kntu.gameObject.PlayerInfo;
 import ir.ac.kntu.save.BinaryPlayerDAO;
 import ir.ac.kntu.save.PlayerDAO;
@@ -25,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Menu {
@@ -64,9 +62,8 @@ public class Menu {
     private Background getBackground(File file) {
         BackgroundFill backgroundFill= null;
         try {
-            backgroundFill = new BackgroundFill(new ImagePattern(new Image
-                    (new FileInputStream(file))),
-                    CornerRadii.EMPTY, Insets.EMPTY);
+            backgroundFill = new BackgroundFill(new ImagePattern(
+                    new Image(new FileInputStream(file))),CornerRadii.EMPTY, Insets.EMPTY);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -74,9 +71,8 @@ public class Menu {
     }
 
     private void setPlayers(Stage stage) {
-        Background background = null;
-        background=new Background(new BackgroundFill(Color
-                .rgb(120,144,255),CornerRadii.EMPTY,Insets.EMPTY));
+        Background background=new Background(new BackgroundFill(Color.rgb(120,144,255),
+                CornerRadii.EMPTY,Insets.EMPTY));
         root.setBackground(background);
         root.getChildren().clear();
         ArrayList<PlayerInfo> players=playerDAO.getAllPlayers();
@@ -104,8 +100,8 @@ public class Menu {
         });
         submit.setOnAction(e->{
             if(result.size()==2) {
-                GameLoop gameLoop=new GameLoop(new File
-                        ("src/main/resources/map/map1.txt"),stage,scene,root,result);
+                GameLoop gameLoop=new GameLoop(new File("src/main/resources/map/map1.txt")
+                        ,stage,scene,root,result);
                 gameLoop.startGame();
                 root.getChildren().clear();
             }

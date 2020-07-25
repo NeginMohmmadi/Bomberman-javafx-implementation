@@ -28,9 +28,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class GameLoop {
     private Stage stage;
     private GridPane root;
@@ -40,7 +37,7 @@ public class GameLoop {
     private AnimationTimer animationTimer;
     private List<GameObject> gameObjects;
     private AddRandomObject addRandomObject;
-    private final int GAME_TiME=185000;
+    private final int gameTime=185000;
     private int numOfPlayers;
     private int deltaTime;
     private long startTime;
@@ -61,7 +58,7 @@ public class GameLoop {
 
     private void setAnimationTimer() {
         animationTimer=new AnimationTimer() {
-            int count=0;
+            private int count=0;
             @Override
             public void handle(long now) {
                 if(count<5){
@@ -82,7 +79,6 @@ public class GameLoop {
                     return;
                 }
                 deltaTime=(int)(new Date().getTime()-startTime)/1000;
-                System.out.println(deltaTime);
                 checkCollide();
                 clean();
                 if (numOfPlayers<=1){
@@ -107,16 +103,16 @@ public class GameLoop {
     }
 
     private void clean() {
-       for (int i=0;i<gameObjects.size();i++){
-           if(!gameObjects.get(i).isAlive()){
-               if(gameObjects.get(i) instanceof Player) {
-                   keyLogger.removeListener(gameObjects.get(i));
-                   ((Player) gameObjects.get(i)).setDeadTime(deltaTime);
-                   numOfPlayers--;
-               }
-               gameObjects.remove(i);
-           }
-       }
+        for (int i=0;i<gameObjects.size();i++){
+            if(!gameObjects.get(i).isAlive()){
+                if(gameObjects.get(i) instanceof Player) {
+                    keyLogger.removeListener(gameObjects.get(i));
+                    ((Player) gameObjects.get(i)).setDeadTime(deltaTime);
+                    numOfPlayers--;
+                }
+                gameObjects.remove(i);
+            }
+        }
     }
 
     private void checkCollide(){
@@ -132,7 +128,7 @@ public class GameLoop {
     public void addObjectsToRoot() {
         root.getChildren().clear();
         Text text=new Text();
-        int time=(GAME_TiME/1000-deltaTime);
+        int time=(gameTime/1000-deltaTime);
         int minute=time/60;
         int seconds=time%60;
         text.setText("TIME    "+minute+":"+seconds);
@@ -161,7 +157,7 @@ public class GameLoop {
             public void run() {
                 end=true;
             }
-        },GAME_TiME);
+        },gameTime);
         animationTimer.start();
         startTime=new Date().getTime();
         addRandomObject.go();
@@ -209,10 +205,8 @@ public class GameLoop {
         int i=0;
         for (PlayerInfo player : players){
             i++;
-            System.out.println("tgtgtg");
             listView.getItems().add(i+". "+player.getName()+"             "+player.getLastScore());
         }
-        System.out.println("uhuh");
         root.add(listView,0,0);
         Button button=new Button("BACK");
         button.setOnAction(e->{

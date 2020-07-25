@@ -1,10 +1,6 @@
 package ir.ac.kntu.animation;
 
 import ir.ac.kntu.gameObject.*;
-import javafx.scene.image.Image;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -18,7 +14,7 @@ public class BombExplosion extends TimerTask {
     private int downBound;
     private int leftBound;
     private int rightBound;
-    List<GameObject> gameObjects;
+    private List<GameObject> gameObjects;
 
     public BombExplosion(Bomb bomb, List<GameObject> gameObjects){
         this.bomb=bomb;
