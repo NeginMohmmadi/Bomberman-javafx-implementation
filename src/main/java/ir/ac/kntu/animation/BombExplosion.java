@@ -45,7 +45,7 @@ public class BombExplosion extends TimerTask {
         setUpBound();
         setRightBound();
         setLeftBound();
-        System.out.println(upBound+" "+downBound+" "+rightBound+" "+leftBound);
+        //System.out.println(upBound+" "+downBound+" "+rightBound+" "+leftBound);
     }
 
     private void setLeftBound() {

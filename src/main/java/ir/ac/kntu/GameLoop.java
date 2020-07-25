@@ -1,17 +1,21 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.gameObject.Bomb;
 import ir.ac.kntu.gameObject.GameObject;
 import ir.ac.kntu.gameObject.Player;
 import ir.ac.kntu.gameObject.PlayerInfo;
 import ir.ac.kntu.keyboard.KeyListener;
 import ir.ac.kntu.keyboard.KeyLogger;
 import ir.ac.kntu.map.MapParser;
+import ir.ac.kntu.menu.Menu;
 import ir.ac.kntu.save.BinaryPlayerDAO;
 import ir.ac.kntu.save.PlayerDAO;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -19,6 +23,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.*;
@@ -26,6 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GameLoop {
+    private Stage stage;
     private GridPane root;
     private Scene scene;
     private MapParser mapParser;
@@ -40,8 +46,9 @@ public class GameLoop {
     private boolean end;
     private ArrayList<PlayerInfo> players;
 
-    public GameLoop(File file,Scene scene,GridPane root,ArrayList<PlayerInfo> players){
+    public GameLoop(File file, Stage stage,Scene scene, GridPane root, ArrayList<PlayerInfo> players){
         init(scene, root);
+        this.stage=stage;
         this.players=players;
         numOfPlayers=players.size();
         mapParser=new MapParser(players);
@@ -57,6 +64,7 @@ public class GameLoop {
             public void handle(long now) {
                 if(end){
                     endGame();
+                    return;
                 }
                 deltaTime=(int)(new Date().getTime()-startTime)/1000;
                 System.out.println(deltaTime);
@@ -148,18 +156,53 @@ public class GameLoop {
         animationTimer.stop();
         keyLogger.removeAllListeners();
         addRandomObject.stop();
-        for(PlayerInfo player : players){
-            if(player.getNumOfLost()+player.getNumOfWon()!=player.getNumOfGame()){
-                player.win();
+        ArrayList<Player> players=removeBombsAndGetPlayers();
+        if(players.size()==1){
+            players.get(0).win(3);
+        }else {
+            for (Player player : players) {
+                if (player.isAlive()) {
+                    player.win(1);
+                }
             }
         }
         showRanks();
         PlayerDAO playerDAO=new BinaryPlayerDAO();
-        playerDAO.saveAllPlayers(players);
+        playerDAO.saveAllPlayers(this.players);
+    }
+
+    private ArrayList<Player> removeBombsAndGetPlayers() {
+        ArrayList<Player> players=new ArrayList<>();
+        for(int i=0;i<gameObjects.size();i++){
+            if(gameObjects.get(i) instanceof Bomb){
+                gameObjects.remove(i);
+            }
+            if(gameObjects.get(i) instanceof Player){
+                players.add((Player)gameObjects.get(i));
+            }
+        }
+        return players;
     }
 
     private void showRanks() {
-
+        root.getChildren().clear();
+        Collections.sort(players);
+        ListView listView=new ListView();
+        listView.setPrefWidth(500);
+        listView.setPrefHeight(600);
+        int i=0;
+        for (PlayerInfo player : players){
+            i++;
+            System.out.println("tgtgtg");
+            listView.getItems().add(i+". "+player.getName()+"             "+player.getLastScore());
+        }
+        System.out.println("uhuh");
+        root.add(listView,0,0);
+        Button button=new Button("BACK");
+        button.setOnAction(e->{
+            Menu menu=new Menu(stage,scene,root);
+        });
+        root.add(button,1,0);
     }
 
     public Scene getScene(){

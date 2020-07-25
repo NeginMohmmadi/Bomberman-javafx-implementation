@@ -15,7 +15,6 @@ import java.util.List;
 public class Player extends GameObject implements KeyListener{
     private int num;
     private ArrayList<Image> images;
-    private int deadTime;
     private ArrayList<KeyCode> interestedInKeys;
     private int pastRowIndex;
     private int pastColumnIndex;
@@ -268,11 +267,11 @@ public class Player extends GameObject implements KeyListener{
             }
         }
     }
-    public void win(){
-        playerInfo.plusNumOfWon();
+    public void win(int score){
+        playerInfo.win(score);
     }
     public void setDeadTime(int deadTime){
-        this.deadTime=deadTime;
+        playerInfo.setDeadTime(deadTime);
     }
     public void setImage(){
         if(keyEvent!=null&& keyEvent.getEventType()==KeyEvent.KEY_PRESSED

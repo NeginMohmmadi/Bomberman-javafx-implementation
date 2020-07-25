@@ -31,6 +31,7 @@ public class Menu {
     private PlayerDAO playerDAO;
     public Menu(Stage stage,Scene scene,GridPane root){
         playerDAO=new BinaryPlayerDAO();
+        root.getChildren().clear();
         Background background = null;
         background = getBackground(new File("src/main/resources/assets/background.png"));
         root.setBackground(background);
@@ -47,7 +48,7 @@ public class Menu {
         this.root=root;
         this.scene=scene;
         newGame.setOnAction(e->{
-            setPlayers();
+            setPlayers(stage);
         });
         root.add(newGame,0,0);
         root.add(tutorial,0,1);
@@ -67,7 +68,7 @@ public class Menu {
         return new Background(backgroundFill);
     }
 
-    private void setPlayers() {
+    private void setPlayers(Stage stage) {
         Background background = null;
         background = getBackground(new File("src/main/resources/assets/background of game.jpg"));
         root.setBackground(background);
@@ -97,7 +98,7 @@ public class Menu {
         });
         submit.setOnAction(e->{
             if(result.size()==2) {
-                GameLoop gameLoop=new GameLoop(new File("src/main/resources/maps.txt"),scene,root,result);
+                GameLoop gameLoop=new GameLoop(new File("src/main/resources/maps.txt"),stage,scene,root,result);
                 gameLoop.startGame();
                 root.getChildren().clear();
             }
