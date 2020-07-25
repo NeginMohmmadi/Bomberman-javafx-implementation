@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -23,13 +24,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Menu {
     private GridPane root;
     private Scene scene;
     private PlayerDAO playerDAO;
+    private Map<File,ImageView> maps;
     public Menu(Stage stage,Scene scene,GridPane root){
+        maps=new HashMap<>();
         playerDAO=new BinaryPlayerDAO();
         root.getChildren().clear();
         Background background = null;
@@ -99,9 +104,8 @@ public class Menu {
         });
         submit.setOnAction(e->{
             if(result.size()==2) {
-                setMap();
                 GameLoop gameLoop=new GameLoop(new File
-                        ("src/main/resources/maps.txt"),stage,scene,root,result);
+                        ("src/main/resources/map/map1.txt"),stage,scene,root,result);
                 gameLoop.startGame();
                 root.getChildren().clear();
             }
@@ -111,9 +115,30 @@ public class Menu {
         root.add(submit,0,2);
     }
 
-    private void setMap() {
+    /*private void setMap(Stage stage,ArrayList<PlayerInfo> result) {
+        ImageView map1= null;
+        ImageView map2=null;
+        try {
+            map1 = new ImageView(new Image(new FileInputStream("images/map1.png")));
+            map2=new ImageView(new Image(new FileInputStream("images/map2.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //maps.put(new File("src/main/resources/map1.txt"),map1);
+        //maps.put(new File("src/main/resources/map2.txt"),map2);
+        File selected=null;
+        map1.setOnMouseClicked(e->{
+            selected=maps.get(map1);
+        });
+        Button submit=new Button("submit");
+        submit.setOnAction(e->{
+            GameLoop gameLoop=new GameLoop(new File
+                    ("src/main/resources/map1.txt"),stage,scene,root,result);
+            gameLoop.startGame();
+            root.getChildren().clear();
+        });
 
-    }
+    }*/
 
     private void addNewPlayer(ListView listView) {
         Stage stage=new Stage();

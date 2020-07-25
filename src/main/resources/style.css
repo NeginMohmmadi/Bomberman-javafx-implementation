@@ -25,6 +25,17 @@
     -fx-stroke:black;
     -fx-stroke-width:1;
 }
+#textField{
+    -fx-border-radius: 20px ;
+    -fx-background-color: rgba(1,255,0,0);
+    -fx-font-size: 100px;
+    -fx-border-width: 0.5px;
+    -fx-width: 60px;
+    -fx-font-family: 'Impact,fantasy,sans-serif' ;
+    -fx-font-weight: bold;
+    -fx-border-color: grey;
+    -fx-alignment: center ;
+}
 .listView:filled:selected:focused, .list-cell:filled:selected {
     /* 3:, 4: */
     -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%);

@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -39,7 +40,7 @@ public class GameLoop {
     private AnimationTimer animationTimer;
     private List<GameObject> gameObjects;
     private AddRandomObject addRandomObject;
-    private final int GAME_TiME=180000;
+    private final int GAME_TiME=185000;
     private int numOfPlayers;
     private int deltaTime;
     private long startTime;
@@ -60,8 +61,22 @@ public class GameLoop {
 
     private void setAnimationTimer() {
         animationTimer=new AnimationTimer() {
+            int count=0;
             @Override
             public void handle(long now) {
+                if(count<5){
+                    root.getChildren().clear();
+                    count++;
+                    TextField textField=new TextField((String.valueOf(count)));
+                    textField.setId("textField");
+                    root.add(textField,0,0);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
                 if(end){
                     endGame();
                     return;
@@ -70,7 +85,7 @@ public class GameLoop {
                 System.out.println(deltaTime);
                 checkCollide();
                 clean();
-                if (numOfPlayers==1){
+                if (numOfPlayers<=1){
                     end=true;
                 }
                 addObjectsToRoot();
