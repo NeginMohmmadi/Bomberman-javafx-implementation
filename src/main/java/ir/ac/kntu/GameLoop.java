@@ -166,19 +166,19 @@ public class GameLoop {
                 }
             }
         }
-        showRanks();
         PlayerDAO playerDAO=new BinaryPlayerDAO();
         playerDAO.saveAllPlayers(this.players);
+        showRanks();
     }
 
     private ArrayList<Player> removeBombsAndGetPlayers() {
         ArrayList<Player> players=new ArrayList<>();
         for(int i=0;i<gameObjects.size();i++){
-            if(gameObjects.get(i) instanceof Bomb){
-                gameObjects.remove(i);
-            }
             if(gameObjects.get(i) instanceof Player){
                 players.add((Player)gameObjects.get(i));
+            }
+            if(gameObjects.get(i) instanceof Bomb){
+                gameObjects.remove(i);
             }
         }
         return players;
@@ -190,6 +190,7 @@ public class GameLoop {
         ListView listView=new ListView();
         listView.setPrefWidth(500);
         listView.setPrefHeight(600);
+        listView.getStyleClass().add("listView");
         int i=0;
         for (PlayerInfo player : players){
             i++;

@@ -70,7 +70,8 @@ public class Menu {
 
     private void setPlayers(Stage stage) {
         Background background = null;
-        background = getBackground(new File("src/main/resources/assets/background of game.jpg"));
+        background=new Background(new BackgroundFill(Color
+                .rgb(120,144,255),CornerRadii.EMPTY,Insets.EMPTY));
         root.setBackground(background);
         root.getChildren().clear();
         ArrayList<PlayerInfo> players=playerDAO.getAllPlayers();
@@ -98,7 +99,9 @@ public class Menu {
         });
         submit.setOnAction(e->{
             if(result.size()==2) {
-                GameLoop gameLoop=new GameLoop(new File("src/main/resources/maps.txt"),stage,scene,root,result);
+                setMap();
+                GameLoop gameLoop=new GameLoop(new File
+                        ("src/main/resources/maps.txt"),stage,scene,root,result);
                 gameLoop.startGame();
                 root.getChildren().clear();
             }
@@ -106,6 +109,10 @@ public class Menu {
         root.add(listView,0,0);
         root.add(add,0,1);
         root.add(submit,0,2);
+    }
+
+    private void setMap() {
+
     }
 
     private void addNewPlayer(ListView listView) {

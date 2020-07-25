@@ -31,11 +31,12 @@ public class BinaryPlayerDAO implements PlayerDAO{
     @Override
     public void saveAllPlayers(ArrayList<PlayerInfo> list) {
         ArrayList<PlayerInfo> players=getAllPlayers();
-        for (PlayerInfo playerInfo:list){
-            if(!players.contains(playerInfo)){
-                players.add(playerInfo);
+        for (int i=0;i<players.size();i++){
+            if(list.contains(players.get(i))){
+                players.remove(i);
             }
         }
+        players.addAll(list);
         File file=new File("src/main/resources/Players.txt");
         try(FileOutputStream fileOutputStream=new FileOutputStream(file,false);
             ObjectOutputStream output=new ObjectOutputStream(fileOutputStream)){

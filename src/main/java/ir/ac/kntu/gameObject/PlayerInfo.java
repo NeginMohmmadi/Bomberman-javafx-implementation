@@ -35,11 +35,7 @@ public class PlayerInfo implements Serializable,Comparable<PlayerInfo> {
             return false;
         }
         PlayerInfo that = (PlayerInfo) o;
-        return numOfGame == that.numOfGame &&
-                numOfWon == that.numOfWon &&
-                numOfLost == that.numOfLost &&
-                score == that.score &&
-                name.equals(that.name);
+        return name.equals(that.name);
     }
 
     @Override

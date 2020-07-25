@@ -43,7 +43,7 @@
     -fx-border-color: rgba(0,230,255,255);
 }
 .list-cell:odd { -fx-background-color: white; /* 1 */ }
-.list-cell:even { -fx-background-color: #8f8; /* for information */ }
+.list-cell:even { -fx-background-color: rgba(0,0,255,0.4); /* for information */ }
 .list-cell:filled:hover {
     -fx-background-color: #00f; /* 2 */
     -fx-text-fill: white; /* 5 */
