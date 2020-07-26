@@ -28,9 +28,8 @@ also you can parse html file in your java code, to parse map from file.
 
 
 # Presention Video
-https://drive.google.com/file/d/1Wa0zFPSl_bjA-TEJd3cqoyovzgpnsTNI/view?usp=sharing
 <p> present your project in a 10 minute video, upload it on the course website and edit README.md and add your presentaion link below (instead of ``YOUR_VIDEO_URL``) </p>
-[Project Description]('YOUR_VIDEO_URL')
+[Project Description](https://drive.google.com/file/d/1Wa0zFPSl_bjA-TEJd3cqoyovzgpnsTNI/view?usp=sharing)
 
 
 # Images
