@@ -44,6 +44,19 @@ public class Menu {
         root.getStyleClass().add("root");
         newGame.getStyleClass().add("newGame");
         tutorial.getStyleClass().add("tutorial");
+        /*tutorial.setOnAction(e->{
+            try {
+                ImageView imageView=new ImageView(new Image
+                        (new FileInputStream("src/main/resources/assets/keyboard-r1-6.gif")));
+                Label player1=new Label("Player1");
+                Label player2=new Label("Player2");
+                root.getChildren().clear();
+                root.add(player1,0,0,5,1);
+                root.ad
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });*/
         exit.setOnAction(e->{
             stage.close();
         });

@@ -48,13 +48,13 @@ public class AddRandomObject extends TimerTask {
 
     public Cell randomCell(){
         ArrayList<Cell> cells=new ArrayList<>();
-        for (GameObject gameObject : gameObjects){
-            if(gameObject instanceof Ground){
-                Cell cell=new Cell(gameObject.getRowIndex(),gameObject.getColumnIndex());
+        for (int i=0;i<gameObjects.size();i++){
+            if(gameObjects.get(i) instanceof Ground){
+                Cell cell=new Cell(gameObjects.get(i).getRowIndex()
+                        ,gameObjects.get(i).getColumnIndex());
                 cells.add(cell);
             }
         }
-
         return cells.get(GENERATOR.nextInt(cells.size()));
     }
 }
