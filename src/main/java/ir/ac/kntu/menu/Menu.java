@@ -34,6 +34,10 @@ public class Menu {
     public Menu(Stage stage,Scene scene,GridPane root){
         maps=new HashMap<>();
         playerDAO=new BinaryPlayerDAO();
+        drawMenu(stage,scene,root);
+    }
+
+    private void drawMenu(Stage stage, Scene scene, GridPane root) {
         root.getChildren().clear();
         Background background = null;
         background = getBackground(new File("src/main/resources/assets/background.png"));
@@ -44,19 +48,37 @@ public class Menu {
         root.getStyleClass().add("root");
         newGame.getStyleClass().add("newGame");
         tutorial.getStyleClass().add("tutorial");
-        /*tutorial.setOnAction(e->{
+        editButtons(stage, scene, root, newGame, tutorial, exit);
+        root.add(newGame,0,0);
+        root.add(tutorial,0,1);
+        root.add(exit,0,2);
+    }
+
+    private void editButtons(Stage stage, Scene scene, GridPane root, Button newGame, Button tutorial, Button exit) {
+        tutorial.setOnAction(e->{
             try {
-                ImageView imageView=new ImageView(new Image
-                        (new FileInputStream("src/main/resources/assets/keyboard-r1-6.gif")));
+                root.setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
+                ImageView imageView=new ImageView(new Image(new FileInputStream("src/main/" +
+                        "resources/assets/keyboard-r1-6.gif")));
+                imageView.setFitWidth(500);
+                imageView.setFitHeight(300);
                 Label player1=new Label("Player1");
                 Label player2=new Label("Player2");
+                player1.setId("player1");
+                player2.setId("player2");
+                Button button=new Button("Back");
+                button.setOnAction(ev->{
+                    drawMenu(stage,scene,root);
+                });
                 root.getChildren().clear();
-                root.add(player1,0,0,5,1);
-                root.ad
+                root.add(player1,0,0);
+                root.add(player2,0,1);
+                root.add(imageView,0,2,2,1);
+                root.add(button,0,3);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
-        });*/
+        });
         exit.setOnAction(e->{
             stage.close();
         });
@@ -66,9 +88,6 @@ public class Menu {
         newGame.setOnAction(e->{
             setPlayers(stage);
         });
-        root.add(newGame,0,0);
-        root.add(tutorial,0,1);
-        root.add(exit,0,2);
     }
 
     @NotNull
